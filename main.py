@@ -8,9 +8,9 @@ from telegram.ext import (
 # ==========================================
 # আপনার তথ্য দিয়ে সেটআপ করুন
 # ==========================================
-BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"      # BotFather এর টোকেন
-ADMIN_USERNAME = "YourTelegramUsername" # আপনার টেলিগ্রাম ইউজারনেম (উইদাউট @)
-ADMIN_ID = 123456789                  # আপনার টেলিগ্রাম Numeric User ID (জেনে নিতে @userinfobot এ মেসেজ দিন)
+BOT_TOKEN = "8616428378:AAHYrUDzQKbbjAEjdODvs5fZvavw6S2e7Nw"      # BotFather এর টোকেন
+ADMIN_USERNAME = "Trusted_zone_1122" # আপনার টেলিগ্রাম ইউজারনেম (উইদাউট @)
+ADMIN_ID = 7624991230                # আপনার টেলিগ্রাম Numeric User ID (জেনে নিতে @userinfobot এ মেসেজ দিন)
 CARD_PRICE = 30                        # প্রতি কার্ডের দাম (৩০ টাকা)
 
 # ডাটাবেস (মেমোরি)
@@ -38,7 +38,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     welcome_text = (
         f"👋 হ্যালো {user.first_name}!\n\n"
-        f"আমাদের অটোমেটেড ফেইসবুক এডস ডুয়েল কারেন্সি কার্ড বটে স্বাগতম।\n"
+        f"আমাদের অটোমেটেড ফেইসবুক এডস কার্ড বটে স্বাগতম।\n"
         f"এখানে আপনি বিভিন্ন BIN-এর কার্ড অটোমেটিক কিনতে পারবেন।\n\n"
         f"📌 **প্রতি কার্ডের মূল্য:** {CARD_PRICE} BDT"
     )
