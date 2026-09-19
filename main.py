@@ -5,11 +5,11 @@ from telegram.ext import (
     MessageHandler, filters, ContextTypes
 )
 
-# Logging
+# Logging configuration
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 # Configuration
-BOT_TOKEN = "8616428378:AAHYrUDzQKbbjAEjd0Dvs5fZvavw6S2e7Nw"
+BOT_TOKEN = "8616428378:AAHYrUDzQKbbjAEjd0Dvs5fZvawv6S2e7Nw"
 ADMIN_USERNAME = "Trusted_zone_1122"
 ADMIN_ID = 7624991230
 CARD_PRICE = 30
@@ -47,21 +47,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.answer()
         await query.message.reply_text(welcome_text, reply_markup=reply_markup)
 
-# Admin Command: Add Card
+# Admin Command: Single Card Add (/addcard <BIN> <CARD>)
 async def add_card(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     if user_id != ADMIN_ID:
         await update.message.reply_text("❌ আপনি এই কমান্ড ব্যবহার করার অনুমোদন পাননি।")
         return
 
-    # Usage: /addcard <BIN> <CARD_DETAILS>
     if len(context.args) < 2:
         await update.message.reply_text(
             "⚠️ ভুল ফরমেট!\n\n"
-            "সঠিক নিয়ম:\n"
+            "একটি কার্ড অ্যাড করার নিয়ম:\n"
             "`/addcard <BIN> <CARD_DETAILS>`\n\n"
             "উদাহরণ:\n"
-            "`/addcard 411122 4111221234567890|05|28|123`",
+            "`/addcard 426684 4266841850892165|12|29|492`",
             parse_mode="Markdown"
         )
         return
@@ -76,10 +75,61 @@ async def add_card(update: Update, context: ContextTypes.DEFAULT_TYPE):
     total_count = len(card_stock[bin_num])
 
     await update.message.reply_text(
-        f"✅ কার্ড সফলভাবে যোগ করা হয়েছে!\n\n"
+        f"✅ ১টি কার্ড সফলভাবে যোগ করা হয়েছে!\n\n"
         f"📌 **BIN:** `{bin_num}`\n"
         f"💳 **Card:** `{card_details}`\n"
         f"📦 **এই BIN-এ মোট কার্ড আছে:** {total_count} টি",
+        parse_mode="Markdown"
+    )
+
+# Admin Command: Bulk Cards Add (/addcards <BIN> \n card1 \n card2...)
+async def add_cards_bulk(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    if user_id != ADMIN_ID:
+        await update.message.reply_text("❌ আপনি এই কমান্ড ব্যবহার করার অনুমোদন পাননি।")
+        return
+
+    text = update.message.text
+    lines = [line.strip() for line in text.strip().split('\n') if line.strip()]
+
+    # First line check
+    first_line_parts = lines[0].split()
+    if len(first_line_parts) < 2:
+        await update.message.reply_text(
+            "⚠️ ভুল ফরমেট!\n\n"
+            "একসাথে একাধিক কার্ড যোগ করার সঠিক নিয়ম:\n\n"
+            "`/addcards <BIN>`\n"
+            "`card1|MM|YY|CVC`\n"
+            "`card2|MM|YY|CVC`\n\n"
+            "উদাহরণ:\n"
+            "`/addcards 426684`\n"
+            "`4266841850892165|12|29|492`\n"
+            "`4266841803198751|01|29|747`",
+            parse_mode="Markdown"
+        )
+        return
+
+    bin_num = first_line_parts[1]
+    card_lines = lines[1:] # All remaining lines
+
+    if not card_lines:
+        await update.message.reply_text("⚠️ অনুগ্রহ করে কমান্ডের নিচের লাইনে কার্ডের তালিকা দিন।")
+        return
+
+    if bin_num not in card_stock:
+        card_stock[bin_num] = []
+
+    added_count = 0
+    for card in card_lines:
+        card_stock[bin_num].append(card)
+        added_count += 1
+
+    total_count = len(card_stock[bin_num])
+
+    await update.message.reply_text(
+        f"✅ **সফলভাবে {added_count} টি কার্ড যোগ করা হয়েছে!**\n\n"
+        f"📌 **BIN:** `{bin_num}`\n"
+        f"📦 **এই BIN-এ বর্তমান মোট স্টক:** {total_count} টি",
         parse_mode="Markdown"
     )
 
@@ -106,6 +156,7 @@ def main():
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("addcard", add_card))
+    app.add_handler(CommandHandler("addcards", add_cards_bulk))
     app.add_handler(CommandHandler("stock", check_stock))
 
     app.run_polling()
