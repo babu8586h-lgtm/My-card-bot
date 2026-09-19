@@ -2,9 +2,8 @@ import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     ApplicationBuilder, CommandHandler, CallbackQueryHandler,
-    MessageHandler, filters, ContextTypes, ConversationRule
+    MessageHandler, filters, ContextTypes
 )
-
 # ==========================================
 # আপনার তথ্য দিয়ে সেটআপ করুন
 # ==========================================
