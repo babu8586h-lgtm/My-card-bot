@@ -1,3 +1,4 @@
+import os
 import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
@@ -8,8 +9,8 @@ from telegram.ext import (
 # Logging configuration
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-# Configuration
-BOT_TOKEN = "8616428378:AAHYrUDzQKbbjAEjd0Dvs5fZvawv6S2e7Nw"
+# Configuration - Token from environment variable or direct fallback
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "8616428378:AAHYrUDzQKbbjAEjd0Dvs5fZvawv6S2e7Nw")
 ADMIN_USERNAME = "Trusted_zone_1122"
 ADMIN_ID = 7624991230
 CARD_PRICE = 30
