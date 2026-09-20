@@ -12,7 +12,7 @@ logging.basicConfig(
 )
 
 # Configuration
-BOT_TOKEN = "8616428378:AAHYrUDzQKbbjAEjd0Dvs5fZvawv6S2e7Nw"
+BOT_TOKEN = "8806387746:AAFQ8tQBLUBrE1psC5-jYJ18Aw8tTA0pzk8"
 ADMIN_USERNAME = "Trusted_zone_1122"
 ADMIN_ID = 7624991230
 
